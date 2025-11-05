@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { Search } from 'lucide-react'
 
-export default function Navbar({ onSearch }) {
+export default function Navbar({ onSearch, onUploadClick, onAuthClick, onLogout, user }) {
   const [query, setQuery] = useState('')
 
   const submit = (e) => {
     e.preventDefault()
-    onSearch(query)
+    onSearch?.(query)
   }
 
   return (
@@ -33,9 +33,34 @@ export default function Navbar({ onSearch }) {
             Search
           </button>
         </form>
-        <div className="hidden sm:flex items-center gap-4 text-sm text-gray-600">
-          <a href="#" className="hover:text-gray-900">Upload</a>
-          <a href="#" className="hover:text-gray-900">Login</a>
+        <div className="hidden sm:flex items-center gap-3 text-sm text-gray-700">
+          <button
+            onClick={onUploadClick}
+            className="px-3 py-2 rounded-md border border-gray-300 hover:border-gray-400 transition"
+          >
+            Upload
+          </button>
+          {user ? (
+            <div className="flex items-center gap-3">
+              <div className="h-8 w-8 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center text-xs font-medium">
+                {user.name?.slice(0, 2).toUpperCase()}
+              </div>
+              <span className="hidden md:inline text-gray-800">{user.name}</span>
+              <button
+                onClick={onLogout}
+                className="px-3 py-2 rounded-md bg-gray-100 hover:bg-gray-200"
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={onAuthClick}
+              className="px-3 py-2 rounded-md bg-gray-900 text-white hover:bg-black"
+            >
+              Login
+            </button>
+          )}
         </div>
       </div>
     </header>
